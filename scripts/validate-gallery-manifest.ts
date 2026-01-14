@@ -113,8 +113,30 @@ const normalizedBlocks: NormalizedBlock[] = manifest.blocks.map((block, i) => {
 // Update manifest with normalized blocks
 manifest.blocks = normalizedBlocks as unknown as RawBlock[];
 
+// Check for duplicate images
+const seenImages = new Set<string>();
+const duplicates: { blockIndex: number; image: string }[] = [];
+for (let i = 0; i < normalizedBlocks.length; i++) {
+  for (const image of normalizedBlocks[i].images) {
+    if (seenImages.has(image)) {
+      duplicates.push({ blockIndex: i, image });
+    } else {
+      seenImages.add(image);
+    }
+  }
+}
+
 // Report
 console.log("");
+if (duplicates.length > 0) {
+  console.log("⚠️  Duplicate images found:");
+  for (const { blockIndex, image } of duplicates) {
+    const block = normalizedBlocks[blockIndex];
+    console.log(`   Block ${blockIndex} (${block.layout}): ${image}`);
+  }
+  console.log("");
+}
+
 if (errors.length > 0) {
   console.log("⚠️  Errors:");
   errors.forEach((e) => console.log(`   ${e}`));

@@ -3,23 +3,36 @@
  * Initialize a gallery manifest from EXIF data.
  * Creates manifest with images array and empty blocks.
  *
- * Usage: bun scripts/init-gallery-manifest.ts <folder> <title> <slug>
+ * Usage: bun scripts/init-gallery-manifest.ts <folder> <title> <slug> [galleryName]
  * Example: bun scripts/init-gallery-manifest.ts merida-2026 "MÉRIDA 2026" merida
+ * Example: bun scripts/init-gallery-manifest.ts src/assets/images/photos/merida-2026 "MÉRIDA 2026" merida-v4 merida-2026-v4
  */
 
 import { $ } from "bun";
 
-const [folder, title, slug] = process.argv.slice(2);
+const [folderInput, title, slug, galleryNameArg] = process.argv.slice(2);
 
-if (!folder || !title || !slug) {
-  console.error("Usage: bun scripts/init-gallery-manifest.ts <folder> <title> <slug>");
+if (!folderInput || !title || !slug) {
+  console.error("Usage: bun scripts/init-gallery-manifest.ts <folder> <title> <slug> [galleryName]");
   console.error("Example: bun scripts/init-gallery-manifest.ts merida-2026 \"MÉRIDA 2026\" merida");
+  console.error("Example: bun scripts/init-gallery-manifest.ts ./photos/merida-2026 \"MÉRIDA 2026\" merida-v4 merida-2026-v4");
   process.exit(1);
 }
 
-const imageDir = `src/assets/images/photos/${folder}`;
-const manifestPath = `src/data/gallery-manifests/${folder}.json`;
-const batchDir = `/tmp/gallery-batches/${folder}`;
+// Resolve folder input - can be a simple name or a full path
+// Optional galleryName allows versioned manifests from same source folder
+function resolveGalleryPaths(input: string, galleryName?: string): { folder: string; imageDir: string; manifestName: string } {
+  const cleaned = input.replace(/\/$/, "");
+  if (cleaned.includes("/")) {
+    const folder = cleaned.split("/").pop()!;
+    return { folder, imageDir: cleaned, manifestName: galleryName || folder };
+  }
+  return { folder: cleaned, imageDir: `src/assets/images/photos/${cleaned}`, manifestName: galleryName || cleaned };
+}
+
+const { folder, imageDir, manifestName } = resolveGalleryPaths(folderInput, galleryNameArg);
+const manifestPath = `src/data/gallery-manifests/${manifestName}.json`;
+const batchDir = `/tmp/gallery-batches/${manifestName}`;
 
 // Check if image directory exists
 const dirExists = await Bun.file(imageDir).exists().catch(() => false);
@@ -62,10 +75,11 @@ const images = exifData.map((img: any) => ({
 images.sort((a, b) => a.filename.localeCompare(b.filename));
 
 const manifest = {
-  gallery: folder,
+  gallery: manifestName,
   title,
   slug,
   year: new Date().getFullYear().toString(),
+  sourceFolder: folder, // Track where images live (may differ from gallery name for versions)
   images,
   blocks: [],
 };
@@ -86,4 +100,4 @@ console.log(`   Batch dir: ${batchDir}`);
 console.log(`   Batches needed: ${Math.ceil(images.length / 8)}`);
 console.log("");
 console.log("Next: Run batch reviews, then merge with:");
-console.log(`  bun scripts/merge-gallery-batches.ts ${folder}`);
+console.log(`  bun scripts/merge-gallery-batches.ts ${manifestName}`);

@@ -38,11 +38,15 @@ interface Manifest {
   title: string;
   slug: string;
   year: string;
+  sourceFolder?: string; // Where images live (may differ from gallery for versions)
   images: { filename: string }[];
   blocks: Block[];
 }
 
 const manifest: Manifest = await manifestFile.json();
+
+// Determine where images actually live (sourceFolder for versioned, otherwise gallery name)
+const imageFolder = manifest.sourceFolder || manifest.gallery;
 
 if (manifest.blocks.length === 0) {
   console.error("Manifest has no blocks. Run batch reviews and merge first.");
@@ -192,12 +196,23 @@ function generateBlockCode(block: Block, imageImports: Map<string, string>): str
   }
 }
 
+// Helper to get prev/next navigation for a chapter
+function getChapterNavigation(chapterIndex: number): { prevHref?: string; nextHref?: string } {
+  const prev = chapterIndex > 0 ? chapters[chapterIndex - 1] : null;
+  const next = chapterIndex < chapters.length - 1 ? chapters[chapterIndex + 1] : null;
+  return {
+    prevHref: prev ? (prev.slug === "/" ? "/" : prev.slug) : undefined,
+    nextHref: next ? (next.slug === "/" ? "/" : next.slug) : undefined,
+  };
+}
+
 // Generate page for each chapter
 for (let i = 0; i < chapters.length; i++) {
   const chapter = chapters[i];
   const isFirst = i === 0;
   const pageFilename = chapter.slug === "/" ? "index.astro" : `${chapter.slug}.astro`;
   const pagePath = `${pageDir}/${pageFilename}`;
+  const { prevHref, nextHref } = getChapterNavigation(i);
 
   // Collect unique images for this chapter
   const chapterImages = new Set<string>();
@@ -216,7 +231,7 @@ for (let i = 0; i < chapters.length; i++) {
 
   // Generate imports
   const importLines = Array.from(imageImports.entries())
-    .map(([filename, varName]) => `import ${varName} from "../../../assets/images/photos/${folder}/${filename}";`)
+    .map(([filename, varName]) => `import ${varName} from "../../../assets/images/photos/${imageFolder}/${filename}";`)
     .join("\n");
 
   // Determine which components are used
@@ -248,9 +263,18 @@ for (let i = 0; i < chapters.length; i++) {
     );
   }
 
+  // Build navigation props string
+  const navProps: string[] = [];
+  if (prevHref) navProps.push(`prevHref="${prevHref}"`);
+  if (nextHref) navProps.push(`nextHref="${nextHref}"`);
+  navProps.push("currentPath={Astro.url.pathname}");
+  navProps.push("chapters={chapters}");
+  navProps.push("client:load");
+
   // Generate page content
   const pageContent = `---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BottomNavigation from "../../../components/BottomNavigation.svelte";
 import {
   ${componentImports.join(",\n  ")}
 } from "../../../components/photos";
@@ -264,6 +288,8 @@ ${importLines}
 
 <BaseLayout title={pageTitle} navTitle={title} chapters={chapters}>
 ${finalBlockCode}
+
+  <BottomNavigation ${navProps.join(" ")} />
 </BaseLayout>
 `;
 
