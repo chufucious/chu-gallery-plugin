@@ -25,6 +25,8 @@ For detailed principles, see `docs/photo-layout-principles.md`.
 
 Example: `/gallery cabo-2025 "CABO 2025" cabo`
 
+**Important:** All paths are relative to the current project directory. The `{folder}` argument is a path within the project (e.g., `./photos/cabo-2025` or just `cabo-2025`). Do NOT search the filesystem for folders — assume the user's folder exists in the current working directory.
+
 ## Gallery Modes
 
 Before starting, identify the gallery's organizational mode:
@@ -82,7 +84,8 @@ Review batch {batchIndex} for {folder} gallery.
 
 Read:
 - Manifest: src/data/gallery-manifests/{folder}.json
-- Layout guide: ~/.claude/skills/review-image-batch/references/layout-guide.md
+- Layout guide: {plugin_base_dir}/skills/review-image-batch/references/layout-guide.md
+  (The plugin base directory is provided in the skill invocation header)
 
 Images to review: indices {startImage} to {endImage}
 (Calculate: startImage = batchIndex * 8, endImage = min(startImage + 7, totalImages - 1))

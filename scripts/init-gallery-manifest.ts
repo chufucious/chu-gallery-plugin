@@ -2,10 +2,13 @@
 /**
  * Initialize a gallery manifest from EXIF data.
  * Creates manifest with images array and empty blocks.
+ * Manifest is named after the slug by default.
  *
  * Usage: bun scripts/init-gallery-manifest.ts <folder> <title> <slug> [galleryName]
  * Example: bun scripts/init-gallery-manifest.ts merida-2026 "MÉRIDA 2026" merida
- * Example: bun scripts/init-gallery-manifest.ts src/assets/images/photos/merida-2026 "MÉRIDA 2026" merida-v4 merida-2026-v4
+ *          → creates merida.json
+ * Example: bun scripts/init-gallery-manifest.ts ./photos/merida-2026 "MÉRIDA 2026" merida-v5
+ *          → creates merida-v5.json
  */
 
 import { $ } from "bun";
@@ -13,24 +16,26 @@ import { $ } from "bun";
 const [folderInput, title, slug, galleryNameArg] = process.argv.slice(2);
 
 if (!folderInput || !title || !slug) {
-  console.error("Usage: bun scripts/init-gallery-manifest.ts <folder> <title> <slug> [galleryName]");
+  console.error("Usage: bun scripts/init-gallery-manifest.ts <folder> <title> <slug>");
   console.error("Example: bun scripts/init-gallery-manifest.ts merida-2026 \"MÉRIDA 2026\" merida");
-  console.error("Example: bun scripts/init-gallery-manifest.ts ./photos/merida-2026 \"MÉRIDA 2026\" merida-v4 merida-2026-v4");
+  console.error("         → creates merida.json");
+  console.error("Example: bun scripts/init-gallery-manifest.ts ./photos/merida-2026 \"MÉRIDA 2026\" merida-v5");
+  console.error("         → creates merida-v5.json");
   process.exit(1);
 }
 
 // Resolve folder input - can be a simple name or a full path
-// Optional galleryName allows versioned manifests from same source folder
-function resolveGalleryPaths(input: string, galleryName?: string): { folder: string; imageDir: string; manifestName: string } {
+// Slug is used as manifest name by default; optional galleryName overrides
+function resolveGalleryPaths(input: string, slug: string, galleryName?: string): { folder: string; imageDir: string; manifestName: string } {
   const cleaned = input.replace(/\/$/, "");
   if (cleaned.includes("/")) {
     const folder = cleaned.split("/").pop()!;
-    return { folder, imageDir: cleaned, manifestName: galleryName || folder };
+    return { folder, imageDir: cleaned, manifestName: galleryName || slug };
   }
-  return { folder: cleaned, imageDir: `src/assets/images/photos/${cleaned}`, manifestName: galleryName || cleaned };
+  return { folder: cleaned, imageDir: `src/assets/images/photos/${cleaned}`, manifestName: galleryName || slug };
 }
 
-const { folder, imageDir, manifestName } = resolveGalleryPaths(folderInput, galleryNameArg);
+const { folder, imageDir, manifestName } = resolveGalleryPaths(folderInput, slug, galleryNameArg);
 const manifestPath = `src/data/gallery-manifests/${manifestName}.json`;
 const batchDir = `/tmp/gallery-batches/${manifestName}`;
 

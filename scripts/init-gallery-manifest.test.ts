@@ -16,9 +16,10 @@ function resolveGalleryFolder(input: string): { folder: string; imageDir: string
   return { folder: cleaned, imageDir: `src/assets/images/photos/${cleaned}` };
 }
 
-// For versioned galleries, allow specifying a gallery name different from folder
+// For versioned galleries, slug is used as manifest name by default
 function resolveGalleryPaths(
   input: string,
+  slug: string,
   galleryName?: string
 ): { folder: string; imageDir: string; manifestName: string } {
   const cleaned = input.replace(/\/$/, "");
@@ -28,28 +29,33 @@ function resolveGalleryPaths(
     return {
       folder,
       imageDir: cleaned,
-      manifestName: galleryName || folder,
+      manifestName: galleryName || slug,
     };
   }
 
   return {
     folder: cleaned,
     imageDir: `src/assets/images/photos/${cleaned}`,
-    manifestName: galleryName || cleaned,
+    manifestName: galleryName || slug,
   };
 }
 
 describe("resolveGalleryPaths with versioning", () => {
-  test("uses folder name as manifest name by default", () => {
-    const result = resolveGalleryPaths("merida-2026");
-    expect(result.manifestName).toBe("merida-2026");
+  test("uses slug as manifest name by default", () => {
+    const result = resolveGalleryPaths("merida-2026", "merida-v5");
+    expect(result.manifestName).toBe("merida-v5");
   });
 
-  test("allows overriding manifest name for versioned galleries", () => {
-    const result = resolveGalleryPaths("src/assets/images/photos/merida-2026", "merida-2026-v4");
+  test("uses slug even when folder path differs", () => {
+    const result = resolveGalleryPaths("src/assets/images/photos/merida-2026", "merida-v5");
     expect(result.folder).toBe("merida-2026");
     expect(result.imageDir).toBe("src/assets/images/photos/merida-2026");
-    expect(result.manifestName).toBe("merida-2026-v4");
+    expect(result.manifestName).toBe("merida-v5");
+  });
+
+  test("allows explicit galleryName override", () => {
+    const result = resolveGalleryPaths("src/assets/images/photos/merida-2026", "merida-v5", "custom-name");
+    expect(result.manifestName).toBe("custom-name");
   });
 });
 
