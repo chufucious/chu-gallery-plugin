@@ -1,12 +1,24 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "chu-gallery-marketplace",
-  "version": "1.0.0",
-  "description": "Photo gallery creation plugins for Claude Code",
+  "description": "AI-assisted photo gallery creation plugins for Claude Code",
+  "owner": {
+    "name": "Eric Chu",
+    "email": "eric@chu.fyi"
+  },
   "plugins": [
     {
       "name": "chu-gallery",
-      "path": ".",
-      "description": "AI-assisted photo gallery creation with Smith/Colberg/Szarkowski-informed layout curation"
+      "description": "AI-assisted photo gallery creation with Smith/Colberg/Szarkowski-informed layout curation. Orchestrates EXIF extraction, image review, and Astro page generation.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Eric Chu",
+        "email": "eric@chu.fyi"
+      },
+      "category": "design",
+      "source": ".",
+      "homepage": "https://github.com/chufucious/chu-gallery-plugin",
+      "tags": ["photography", "gallery", "astro", "layout", "curation"]
     }
   ]
 }
