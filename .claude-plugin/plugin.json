@@ -1,0 +1,20 @@
+{
+  "name": "chu-gallery",
+  "version": "1.0.0",
+  "description": "AI-assisted photo gallery creation with Smith/Colberg/Szarkowski-informed layout curation. Orchestrates EXIF extraction, image review, and Astro page generation.",
+  "author": {
+    "name": "Eric Chu",
+    "email": "eric@chu.fyi"
+  },
+  "repository": "https://github.com/ericchu/chu-gallery-plugin",
+  "license": "MIT",
+  "keywords": [
+    "photography",
+    "gallery",
+    "astro",
+    "layout",
+    "curation",
+    "photo-book",
+    "sequencing"
+  ]
+}
