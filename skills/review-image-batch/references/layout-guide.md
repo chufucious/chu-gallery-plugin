@@ -2,13 +2,15 @@
 
 Comprehensive reference for photo gallery visual design. A gallery is not a dump of images—it's a visual narrative with rhythm, pacing, and intentional whitespace.
 
-## Core Principle: Single Images First
+## Core Principle: Visual Judgment
 
-**Default to single-image layouts.** Each photo should stand on its own.
+A gallery needs **rhythm and variety** — not a mechanical formula.
 
-Multi-image layouts (TwoUp, ThreeUp, SplitLayout, FourUp) are **rare exceptions** - use only when images have an extraordinary reason to be paired. Most galleries should be 80%+ single-image layouts.
+Single-image layouts (WideImage, OffsetImage, FullBleed, InsetImage) let strong images breathe.
 
-**Ask yourself:** "Would these images lose meaning if shown separately?" If no, show them separately.
+Multi-image layouts (TwoUp, ThreeUp, SplitLayout) create dialogue and meaning through juxtaposition.
+
+**The question isn't "should I pair?" but "does this pairing create meaning beyond either image alone?"**
 
 ---
 
@@ -42,8 +44,7 @@ This creates visual fatigue. Vary the rhythm.
   - Climactic moments
   - Images that demand full attention
   - Strong environmental/landscape shots
-- **Frequency**: 2-4 per gallery maximum
-- **After FullBleed**: Always follow with breathing room (Spacer, WideImage, or OffsetImage)
+- **After FullBleed**: Follow with breathing room (Spacer, WideImage, or OffsetImage)
 
 #### WideImage
 - **Width**: ~83% (10/12 columns), centered with margins
@@ -55,72 +56,63 @@ This creates visual fatigue. Vary the rhythm.
   - Images with strong horizontal composition
 - **Frequency**: Flexible, good rhythm-setter
 
-### Multi-Image Layouts (USE SPARINGLY)
+### Multi-Image Layouts (Dialogue & Sequence)
 
-**These are exceptions, not defaults. Most images should stand alone.**
+Multi-image layouts create visual dialogue. A good pairing says something neither image says alone.
 
 #### TwoUpLayout
 - **Width**: 50/50 side-by-side
 - **Effect**: Dialogue, comparison, duality
-- **Frequency**: MAX 2-3 per gallery. If you're using more, reconsider.
 
-**ONLY use when images have EXTRAORDINARY connection:**
+**Lyons's Juxtaposition Test** — pair when:
 
 | Connection Type | Example |
 |-----------------|---------|
-| Temporal | Same moment, different angles (truly simultaneous) |
-| Diptych | Intentional artistic pairing that creates new meaning |
-| Narrative | Before/after, cause/effect where separation destroys meaning |
-| Subject | Same person in clear dialogue between frames |
+| Temporal | Same moment, different angles |
+| Spatial | Same scene, complementary views |
+| Formal echo | Compositional rhyme (lines, shapes, colors) |
+| Emotional | Contrast or reinforcement of feeling |
+| Transformation | Together they say something neither says alone |
 
-**DEFAULT TO SEPARATE.** If you're unsure whether to pair, don't pair.
-
-**ANTI-PATTERNS:**
-- Grouping because images are "related" (most images in a gallery are related)
-- Grouping to "save space" or "move faster"
-- Grouping similar compositions (show the best one alone instead)
+A strong TwoUp is better than two mediocre WideImages.
 
 #### SplitLayout
 - **Width**: 1/3 + 2/3 asymmetric
 - **Effect**: Intentional hierarchy, one image as context for another
-- **Frequency**: MAX 1-2 per gallery
 - **Use for**:
-  - Portrait + environment where one literally frames the other
-  - Detail + context that MUST be seen together
+  - Portrait + environment where one frames the other
+  - Detail + context that work together
 - **Props**: `ratio="1/2"` (default) or `ratio="2/3"`
 
 #### ThreeUpLayout
 - **Width**: Three equal panels (scrollable on mobile)
 - **Effect**: Rapid progression, triptych
-- **Frequency**: MAX 1-2 per gallery
-- **Use ONLY for**:
-  - True sequences (entering → inside → emerging)
+- **Use for**:
+  - True sequences (entering → through → emerging)
   - Triptychs with clear visual throughline
-- **Never** use just because you have 3 related images
+  - Movement or progression through space/time
 
 #### FourUpGrid
 - **Width**: 2x2 grid
 - **Effect**: Collection, texture study
-- **Frequency**: MAX 0-1 per gallery. Often unnecessary.
 - **Use for**:
-  - Detail collections where individual images don't merit attention
-  - Texture/pattern studies
-- **Usually a sign of weak curation** - consider cutting images instead
+  - Detail collections (textures, patterns, fragments)
+  - Four moments that form a complete thought
 
-### Whitespace Components (NEW)
+### Whitespace Components
 
 #### OffsetImage
 - **Width**: 4-5 columns (~35-42%), can align left/center/right
 - **Effect**: Restraint, breathing room, intimate moment
 - **Use for**:
-  - **Vertical/portrait images that shouldn't dominate**
+  - Vertical/portrait images
   - Quiet, contemplative moments
   - Punctuation between sections
   - Images that need negative space to work
 - **Props**: `align="left|center|right"`, `size="small|medium"`, `priority`
 - **Default**: `align="left"` `size="medium"` `priority=false`
 
-**IMPORTANT**: Vertical images should default to OffsetImage, NOT be forced into TwoUp/SplitLayout pairs.
+Vertical images naturally suit OffsetImage—they get breathing room without dominating.
 
 #### InsetImage
 - **Width**: 4 columns (~33%), always centered
@@ -130,8 +122,7 @@ This creates visual fatigue. Vary the rhythm.
   - Details that shouldn't compete
   - Intimate portraits
   - Visual whispers
-- **Props**: `priority` (for above-the-fold, rarely needed)
-- **Frequency**: 1-2 per gallery, special moments only
+- **Props**: `priority` (for above-the-fold)
 
 #### Spacer
 - **Effect**: Pure vertical whitespace
@@ -187,23 +178,25 @@ TwoUp      ← no breathing room
 
 ---
 
-## Decision Flowchart
+## Decision Guide
 
-For each image:
+For each image, consider its role in the visual narrative:
 
-1. **Is it a hero shot?** → FullBleed (max 2-4 per gallery)
-2. **Is it vertical/portrait?** → OffsetImage (default) or InsetImage (if intimate)
-3. **Is it a strong standalone?** → WideImage ← **THIS IS THE DEFAULT**
-4. **Is it a quieter moment?** → OffsetImage with appropriate alignment
-5. **Need breathing room?** → Spacer before next block
+**Single-image layouts:**
+- **FullBleed** — Hero moments that demand full attention
+- **WideImage** — Strong standalone images
+- **OffsetImage** — Verticals, quiet moments, breathing room
+- **InsetImage** — Intimate details, visual whispers
 
-**Only after exhausting single-image options:**
+**Multi-image layouts:**
+- **TwoUp** — When juxtaposition creates dialogue (apply Lyons's test)
+- **ThreeUp** — True sequences with visual throughline
+- **SplitLayout** — Asymmetric pairs where one frames the other
+- **FourUp** — Collections that form a complete thought
 
-6. **Is there an EXTRAORDINARY reason to pair?** (see criteria above)
-   - Truly simultaneous moment? → TwoUp (max 2-3 per gallery)
-   - One frames the other? → SplitLayout (max 1-2 per gallery)
-7. **Is it a true triptych/sequence?** → ThreeUp (max 1-2 per gallery)
-8. **Are these throwaway details?** → FourUpGrid (max 0-1) or just cut them
+**Pacing:**
+- **Spacer** — Breathing room after powerful images
+- **Chapter** — Location/theme/time breaks
 
 ---
 
@@ -221,20 +214,16 @@ For each image:
 
 ## Quality Checklist
 
-Before finalizing blocks, verify:
+Before finalizing blocks, verify rhythm and variety:
 
-- [ ] **80%+ single-image layouts** (WideImage, OffsetImage, FullBleed, InsetImage)
-- [ ] **MAX 2-3 TwoUp** in entire gallery
-- [ ] **MAX 1-2 ThreeUp** in entire gallery
-- [ ] **MAX 1-2 SplitLayout** in entire gallery
-- [ ] **MAX 0-1 FourUp** in entire gallery
-- [ ] No consecutive multi-image layouts
-- [ ] Vertical images use OffsetImage (not forced into pairs)
-- [ ] FullBleed images have breathing room after
-- [ ] Multi-image groups have EXTRAORDINARY reason to be paired
-- [ ] At least 1-2 Spacers for pacing
-- [ ] First image is FullBleed or WideImage with `priority={true}`
-- [ ] Chapters added for galleries with clear thematic/location breaks
+- [ ] Gallery has visual dynamics (loud, medium, quiet moments)
+- [ ] No monotonous sequences (same layout repeated 3+ times)
+- [ ] Multi-image pairings create meaning (pass Lyons's test)
+- [ ] Verticals have appropriate breathing room
+- [ ] FullBleed images followed by lighter layouts
+- [ ] Spacers used for pacing and section breaks
+- [ ] First image has `priority={true}` for LCP
+- [ ] Chapters mark clear location/theme breaks
 
 ---
 

@@ -91,7 +91,7 @@ Workflow:
 1. Read manifest to get image filenames
 2. Read layout guide for rules
 3. View each image file with Read tool
-4. Create layout blocks (80%+ single-image!)
+4. Create layout blocks using your visual judgment
 5. Write JSON to: /tmp/gallery-batches/{folder}/batch-{NN}.json
    where NN = batchIndex padded to 2 digits (00, 01, 02...)
 6. Return TEXT SUMMARY ONLY
@@ -106,10 +106,20 @@ Output file format:
   ]
 }
 
-CRITICAL:
-- Default to single-image layouts (WideImage, OffsetImage)
-- Multi-image layouts (TwoUp, ThreeUp) are RARE - max 2-3 TwoUp for entire gallery
-- Look for Chapter breaks at location/theme changes
+LAYOUT PHILOSOPHY:
+Apply visual judgment, not mechanical rules. A gallery needs rhythm and variety.
+
+Single-image (WideImage, OffsetImage, InsetImage, FullBleed):
+- Strong standalones, portraits, quiet moments
+
+Multi-image (TwoUp, ThreeUp):
+- Use when juxtaposition creates meaning beyond either image alone
+- Apply Lyons's test: Temporal? Spatial? Formal echo? Emotional pairing? Transformation?
+- A good TwoUp is BETTER than two mediocre WideImages
+- A true sequence (entering→through→emerging) deserves ThreeUp
+
+Spacer: Add breathing room after powerful images
+Chapter: Insert at location/theme changes
 ```
 
 **Parallel execution:** Sub-agents can run in parallel since each writes to its own file.
@@ -158,31 +168,31 @@ Only run missing batches, then merge.
 
 ## Layout Philosophy
 
-**80%+ single-image layouts.** Multi-image layouts are rare exceptions.
+A gallery needs **rhythm and variety** — loud moments, quiet moments, pairings that create meaning.
 
-| Layout | Default? | Limit |
-|--------|----------|-------|
-| WideImage | **YES** | Unlimited |
-| OffsetImage | **YES** | Unlimited |
-| FullBleed | Yes (hero) | 2-4 per gallery |
-| Spacer | Yes | As needed |
-| TwoUp | **NO** | Max 2-3 |
-| ThreeUp | **NO** | Max 1-2 |
-| SplitLayout | **NO** | Max 1-2 |
-| FourUp | **NO** | Max 0-1 |
-| Chapter | Special | As needed |
+| Layout | Purpose |
+|--------|---------|
+| WideImage | Strong standalone landscapes |
+| OffsetImage | Portraits, quiet moments, breathing room |
+| FullBleed | Hero shots, climactic moments |
+| InsetImage | Intimate details, visual whispers |
+| Spacer | Pacing, section breaks |
+| TwoUp | Images that speak to each other |
+| ThreeUp | True sequences (entering→through→emerging) |
+| SplitLayout | Asymmetric pairs, one frames the other |
+| Chapter | Location/theme breaks |
 
-### Lyons's Juxtaposition Test for TwoUp
+### Lyons's Juxtaposition Test
 
-Only pair images when juxtaposition creates meaning beyond either image alone:
+Pair images when juxtaposition creates meaning beyond either image alone:
 
-1. **Temporal** — Within minutes, same moment
-2. **Spatial** — Same scene, different angle
+1. **Temporal** — Same moment, different angles
+2. **Spatial** — Same scene, complementary views
 3. **Formal echo** — Compositional rhyme (lines, shapes, colors)
-4. **Emotional pairing** — Contrast or reinforcement
+4. **Emotional** — Contrast or reinforcement
 5. **Transformation** — Together they say something neither says alone
 
-If none apply, use WideImage × 2 instead of TwoUp.
+A strong TwoUp is better than two mediocre WideImages.
 
 ## Output
 
