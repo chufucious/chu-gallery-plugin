@@ -16,7 +16,7 @@
         "email": "eric@chu.fyi"
       },
       "category": "design",
-      "source": ".",
+      "source": "./",
       "homepage": "https://github.com/chufucious/chu-gallery-plugin",
       "tags": ["photography", "gallery", "astro", "layout", "curation"]
     }
