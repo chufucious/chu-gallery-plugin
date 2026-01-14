@@ -1,0 +1,12 @@
+{
+  "name": "chu-gallery-marketplace",
+  "version": "1.0.0",
+  "description": "Photo gallery creation plugins for Claude Code",
+  "plugins": [
+    {
+      "name": "chu-gallery",
+      "path": ".",
+      "description": "AI-assisted photo gallery creation with Smith/Colberg/Szarkowski-informed layout curation"
+    }
+  ]
+}
